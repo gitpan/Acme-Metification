@@ -1,0 +1,7 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Acme/Metification.pm
+t/t01.t
+t/t02.t
