@@ -4,6 +4,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'		=> 'Acme::Metification',
     'VERSION_FROM'	=> 'lib/Acme/Metification.pm', # finds $VERSION
+    'LICENSE' => 'perl',
     'PREREQ_PM'		=> {
                              Filter::Simple => 0.78,
                              Test::More => 0.44,

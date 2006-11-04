@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw /$VERSION/;
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 use Filter::Simple;
 
@@ -16,15 +16,15 @@ use Filter::Simple;
 # Then pray :) This is ugly.
 
 FILTER_ONLY
-   all  => \&filter_all,     # Used to get the source code lines
-   code => \&filter_recurse, # Used to filter recursive replacements
+   all  => \&_filter_all,     # Used to get the source code lines
+   code => \&_filter_recurse, # Used to filter recursive replacements
                              # of limited depth
-   code => \&filter_meta;#,    # Used to filter replacements
+   code => \&_filter_meta;#,    # Used to filter replacements
 #   all => sub {my $co=0;my $c=$_;$c=~s/\n/$co++."\n"/sge;print $c;$_};
 
 my @src_lines;
 
-sub filter_all {
+sub _filter_all {
    if (@src_lines) {
       die "Filter invoked multiple times. Not supported in this version!";
    }
@@ -34,31 +34,31 @@ sub filter_all {
 };
 
 
-sub filter_meta {
+sub _filter_meta {
    while (
           s{^\s*meta\s*(.*)}{
-                               replace_meta($1)
+                               _replace_meta($1)
                             }mge
          ) {}
 }
 
-sub filter_recurse {
+sub _filter_recurse {
 
-while (
-   s{^\s*recursemeta\s*depth\s*\=\>\s*(\d+)\s*,\s*(.+)}!
-      my $depth = $1-1;
-      my $rep = replace_meta($2);
-      if ($depth > 0) {
-         $rep =~ s{^\s*recursemeta\s*depth\s*\=\>\s*(\d+)\s*,\s*(.+)}|
-            "recursemeta depth => " . ($depth) . ", $2"
-         |mge;
-      } else { $rep =~ s{^\s*recursemeta\s*depth\s*\=\>\s*(\d+)\s*,\s*(.+)}||mg }
-     $rep;
-   !mge
-) {}
+    while (
+       s{^\s*recursemeta\s*depth\s*\=\>\s*(\d+)\s*,\s*(.+)}!
+          my $depth = $1-1;
+          my $rep = _replace_meta($2);
+          if ($depth > 0) {
+             $rep =~ s{^\s*recursemeta\s*depth\s*\=\>\s*(\d+)\s*,\s*(.+)}|
+                "recursemeta depth => " . ($depth) . ", $2"
+             |mge;
+          } else { $rep =~ s{^\s*recursemeta\s*depth\s*\=\>\s*(\d+)\s*,\s*(.+)}||mg }
+         $rep;
+       !mge
+    ) {}
 }
 
-sub replace_meta {
+sub _replace_meta {
    my $match = shift;
    $match =~ /(\d+)\s*,\s*(\d+)/ or $match =~ /(\d+)/;
 
@@ -90,10 +90,6 @@ __END__
 =head1 NAME
 
 Acme::Metification - Give Perl the power of Metaprogramming!
-
-=head1 VERSION
-
-Current version is 1.000.
 
 =head1 SYNOPSIS
 
@@ -189,11 +185,12 @@ C<meta> directives will be recursed into deeply.
 
 =head1 AUTHOR
 
-Steffen Mueller, E<lt>metification-module at steffen-mueller dot net<gt>
+Steffen Mueller, E<lt>smueller@cpan.org<gt>
 
-=head1 COPYRIGHT
+=head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002 Steffen Mueller. All rights reserved.
+Copyright (c) 2002-2006 Steffen Mueller. All rights reserved.
+
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 

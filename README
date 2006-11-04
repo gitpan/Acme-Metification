@@ -1,5 +1,5 @@
-Acme::Metification version 1.00
-===============================
+Acme::Metification
+==================
 
 This module gives you some meta-programming abilites within Perl.
 It uses source filters to do evil things with your source.
@@ -29,9 +29,9 @@ the versions listed.
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2002 Steffen Mueller, all rights reserved.
+Copyright (C) 2002-2006 Steffen Mueller, all rights reserved.
 
-Author can be reached at <metification-module@steffen-mueller.net>
+Author can be reached at <smueller@cpan.org>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
